@@ -40,8 +40,39 @@ def contextwin(l, win):
     assert win >= 1
     l = list(l)
 
-    lpadded = win // 2 * [-1] + l + win // 2 * [-1]
+    lpadded = win // 2 * [0] + l + win // 2 * [0]
     out = [lpadded[i:(i + win)] for i in range(len(l))]
 
     assert len(out) == len(l)
     return out
+
+def pad_sentences(sentences, padding_word="<PAD/>"):
+    """
+    Pads all sentences to the same length. The length is defined by the longest sentence.
+    Returns padded sentences.
+    """
+    sequence_length = max(len(x) for x in sentences)
+    padded_sentences = []
+    for i in range(len(sentences)):
+        sentence = sentences[i]
+        num_padding = sequence_length - len(sentence)
+        new_sentence = sentence + [padding_word] * num_padding
+        padded_sentences.append(new_sentence)
+    return padded_sentences
+
+
+def batch_iter(data, batch_size, num_epochs):
+    """
+    Generates a batch iterator for a dataset.
+    """
+    data = np.array(data)
+    data_size = len(data)
+    num_batches_per_epoch = int(len(data)/batch_size) + 1
+    for epoch in range(num_epochs):
+        # Shuffle the data at each epoch
+        shuffle_indices = np.random.permutation(np.arange(data_size))
+        shuffled_data = data[shuffle_indices]
+        for batch_num in range(num_batches_per_epoch):
+            start_index = batch_num * batch_size
+            end_index = min((batch_num + 1) * batch_size, data_size)
+            yield shuffled_data[start_index:end_index]

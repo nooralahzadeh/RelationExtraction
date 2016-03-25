@@ -51,14 +51,15 @@ class GRUTheano:
         self.mc = theano.shared(name='mc', value=np.zeros(c.shape).astype(theano.config.floatX))
 
 
+        
         # We store the Theano graph here
-        #self.theano = {}
-        #self.__theano_build__()
+        self.theano = {}
+        self.__theano_build__()
 
 	# as many columns as context window size
         # as many lines as words in the sentence
 	
-    #def __theano_build__(self):
+    def __theano_build__(self):
         E, V, U_1, U_2, W, b, c = self.E, self.V, self.U_1, self.U_2, self.W, self.b, self.c
         
 	#x = T.ivector('x')
@@ -175,7 +176,7 @@ class GRUTheano:
         labels = y
 	
         self.sgd_step(words, labels, learning_rate)
-	#self.normalize()
+	self.normalize()
         
 	
     def save(self, folder):

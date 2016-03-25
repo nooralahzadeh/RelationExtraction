@@ -162,6 +162,7 @@ def dataset(path):
     #print("Using vocabulary size %d." % vocabulary_size)
     print("The least frequent word in our vocabulary is '%s' and appeared %d times." % (vocab[-1][0], vocab[-1][1]))
     sorted_vocab = sorted(vocab, key=operator.itemgetter(1))
+   
     index_to_word = ["<MASK/>", UNKNOWN_TOKEN] + [x[0] for x in sorted_vocab]
     word_to_index = dict([(w, i) for i, w in enumerate(index_to_word)])
 
@@ -172,19 +173,18 @@ def dataset(path):
     for i, sent in enumerate(test_tokenized_sentences):
         test_tokenized_sentences[i] = [w if w in word_to_index else UNKNOWN_TOKEN for w in sent]
 
-    index_to_label = set([item for sublist in train_labels for item in sublist])
+    lables=[item for sublist in train_labels for item in sublist]
+    index_to_label=['<MASK/>']+[i for i in np.unique(lables)]
     label_to_index = dict([(w, i) for i, w in enumerate(index_to_label)])
     
     dicts={'words2idx':word_to_index,'labels2idx':label_to_index}
     # Create the training dataset and test dataset
     X_train = np.asarray([[word_to_index[w] for w in sent] for sent in train_tokenized_sentences])
     y_train = np.asarray([[label_to_index[w] for w in sent] for sent in train_labels])
-    
-    
-    
+      
     X_test = np.asarray([[word_to_index[w] for w in sent] for sent in test_tokenized_sentences])
     y_test = np.asarray([[label_to_index[w] for w in sent] for sent in test_labels])
-    
+                        
     
     semeval={'train_dataset':X_train,'train_labels':y_train,'test_dataset':X_test,
              'test_labels':y_test,'dicts':dicts}

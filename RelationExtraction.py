@@ -37,14 +37,14 @@ def main(param=None):
 		    'verbose': 1,
 		    'decay': True,
 		    # decay on the learning rate if improvement stops
-		    'win': 3,
+		    'win': 7,
 		    # number of words in the context window
 		    'nhidden': 200,
 		    # number of hidden units
 		    'seed': 345,
 		    'emb_dimension': 50,
 		    # dimension of word embedding
-		    'nepochs': 60,
+		    'nepochs': 100,
 		    # 60 is recommended
 		    'savemodel': False}
 	print param
@@ -72,10 +72,10 @@ def main(param=None):
 	x_test=[np.array(x,dtype=np.int32) for x in test_dataset]
 	y_test=[np.array(x,dtype=np.int32) for x in test_labels]
 
-	x_train=train_dataset[0:6000]
-	y_train=train_labels[0:6000]
-	x_valid=train_dataset[6001:8000]
-	y_valid=train_labels[6001:8000]
+	x_train=train_dataset[0:7200]
+	y_train=train_labels[0:7200]
+	x_valid=train_dataset[7201:8000]
+	y_valid=train_labels[7201:8000]
 	
 	
 
